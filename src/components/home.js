@@ -10,7 +10,7 @@ const home = ({ navigation }) => {
                     title="Furniture"
                     onPress={() => {
                         console.log("furniture Pressedddd")
-                        navigation.navigate('Items')
+                        navigation.navigate('Items',{ id : 2})
                     }}
                     color="red"
                 />
@@ -19,7 +19,7 @@ const home = ({ navigation }) => {
                 <Button
                     title="Electronics"
                     onPress={() => {
-                        navigation.navigate("Items")
+                        navigation.navigate("Items", {id :1})
                         console.log("Electric Pressed")
                     }}
                     color="blue"

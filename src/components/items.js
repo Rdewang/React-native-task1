@@ -2,12 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { Text, View, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
 import { getItembyCatId } from "../servicefile";
 
-const items = ({ navigation }) => {
+const items = ({ navigation, route }) => {
 
     const [data, setData] = useState();
+    const  { id } = route.params; 
 
     const getData = async () => {
-        let response = await getItembyCatId(2);
+        let response = await getItembyCatId(id);
         console.log(response.data)
         if (response) {
             setData(response.data.data)

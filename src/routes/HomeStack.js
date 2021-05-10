@@ -3,7 +3,7 @@ import { View, Text } from 'react-native';
 import Home from "../components/home";
 import Items from "../components/items";
 import Details from "../components/details";
-import Cart from "../components/cart";
+import Cart from "../components/cart"
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -23,16 +23,4 @@ const HomeStack = () => {
     );
 };
 
-export default HomeStack
-// const screens = {
-//     Home: {
-//         screen: Home
-//     },
-//     Items: {
-//         screen: Items
-//     }
-// }
-
-// const HomeStack = createStackNavigator(screens);
-
-// export default NavigationContainer(HomeStack)
+export default HomeStack;

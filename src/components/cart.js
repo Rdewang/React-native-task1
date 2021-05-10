@@ -1,24 +1,34 @@
-import React, { useEffect } from 'react'
-import { useState } from 'react';
-import { View, Text, FlatList } from 'react-native';
-// import { cartItems, updateQuantity, deleteItem, emptyCart } from "../servicefile";
+import React, { useEffect, useState } from 'react'
+import { View, Text } from 'react-native'
+import { cartItems , updateQuantity} from "../servicefile";
 
-const cart = async ({ navigation }) => {
+const cart = ({ navigation}) => {
 
-    const [cartData, setCartData] = useState();
+    const [ data , setData ] = useState([]);
 
-    // const getData = async () => {
-    //     const response = await cartItems();
-    //     console.log(response.data)
-    // }
+    useEffect(() => {
+        getData();
+    })
+
+    const getData = async () => {
+        // console.log(itemId)
+        let response = await cartItems();
+        if (response) {
+            const res = response.data;
+            console.log(res)
+            // setData(res);
+            // console.log("data", data, " res" , res)
+        } else {
+            console.log("Error", response)
+        }
+    }
 
     return (
-        <View >
-            <Text>
-                HIIIIIII From Cart
-            </Text>
+        <View>
+            <Text>hiiiii</Text>
         </View>
     )
 }
 
 export default cart
+

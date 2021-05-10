@@ -4,67 +4,55 @@ import { getItembyId, addToCart } from "../servicefile"
 
 const details = ({ navigation, route }) => {
     const { id } = route.params;
-    const [data, setData] = useState(null);
+    let res = "";
+    const [data, setData] = useState([]);
 
     useEffect(() => {
-        // getData(id);
-        let response = getItembyId(id);
-        if (response) {
-            const res = response.data.data;
-            console.log(res[0])
-            setData(res[0])
-            console.log("data", data)
-            return
-        } else {
-            console.log("Error", response)
-        }
-    }, []);
+        getData(id);
+    },[]);
 
     const getData = async (itemId) => {
         // console.log(itemId)
         let response = await getItembyId(itemId);
         if (response) {
-            const res = response.data.data;
-            console.log(res[0])
-            setData(res[0])
-            console.log("data", data)
-            return
+             res = response.data.data[0];
+            // console.log(res)
+            setData(res);
+            // console.log("data", data, " res" , res)
         } else {
             console.log("Error", response)
         }
     }
-
-
     // console.log(data)
-    return (
+    return ( 
         <ScrollView>
             <View style={styles.container}>
                 <View style={styles.title}>
-                    {/* <Text style={styles.title}>{data}</Text> */}
-                    <Text style={styles.title}>Mobile</Text>
+                    <Text style={styles.title}>{data.name}</Text>
+                    {/* <Text style={styles.title}>Mobile</Text> */}
                 </View>
                 <View style={styles.image}>
                     <Text>Image</Text>
                 </View>
                 <View >
-                    {/* <Text style={styles.price}> Rs. {data.price} /-</Text> */}
-                    <Text style={styles.price}> Rs. 10,000 /-</Text>
+                    <Text style={styles.price}> Rs. {data.price} /-</Text>
+                    {/* <Text style={styles.price}> Rs. 10,000 /-</Text> */}
                 </View>
                 <View >
-                    {/* <Text style={styles.desc}>{data.description}</Text> */}
-                    <Text style={styles.desc}>
+                    <Text style={styles.desc}>{data.description}</Text>
+                    {/* <Text style={styles.desc}>
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
                         eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
                         minim veniam, quis nostrud exercitation ullamco laboris nisi ut
                         aliquip ex ea commodo consequat.
-                </Text>
+                </Text> */}
                 </View>
                 <View style={styles.addtocart}>
                     <Button
                         title="Add To Cart"
                         onPress={() => {
                             console.log("Item Added");
-                            addToCart(6)
+                            addToCart(data.id)
                             navigation.navigate('Cart')
                         }}
                         color="#843ED7"

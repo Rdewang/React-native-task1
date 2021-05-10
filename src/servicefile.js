@@ -55,6 +55,7 @@ export function getItembyId(id) {
         url: baseURL + `/getitembyid/${id}`
     })
         .then(data => {
+            // console.log("from service" ,data.data)
             return data;
         })
         .catch(error => {
@@ -69,6 +70,7 @@ export function cartItems() {
         url: baseURL + `/cartitems`
     })
         .then(data => {
+            // console.log(data)
             return data;
         })
         .catch(error => {
@@ -103,19 +105,21 @@ export function updateQuantity(id) {
         });
 }
 export function addToCart(itemId) {
+    // console.log(itemId)
     return axios({
         method: "POST",
-        url: baseURL + `/addtocart/:${itemId}`
+        url: baseURL + `/addtocart/${itemId}`
     })
         .then(data => {
+            // console.log(data)
             return data;
         })
         .catch(error => {
-            console.log("object", error)
-            return error.response;
+            console.log("object", error.response)
+            return error;
         });
 }
-export function emptyCart(itemId) {
+export function emptyCart() {
     return axios({
         method: "DELETE",
         url: baseURL + `/emptycart`
