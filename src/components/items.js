@@ -9,7 +9,7 @@ const items = ({ navigation, route }) => {
 
     const getData = async () => {
         let response = await getItembyCatId(id);
-        console.log(response.data)
+        // console.log(response.data)
         if (response) {
             setData(response.data.data)
         } else {

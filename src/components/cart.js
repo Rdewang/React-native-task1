@@ -1,14 +1,26 @@
 import React, { useEffect, useState } from 'react'
-import { View, Text,FlatList, StyleSheet, Button ,TouchableOpacity} from 'react-native'
-import { cartItems , updateQuantity} from "../servicefile";
+import { View, Text, FlatList, StyleSheet, Button, Modal, TouchableOpacity, Pressable } from 'react-native'
+import { cartItems, updateQuantity, deleteItem, emptyCart } from "../servicefile";
 
-const cart = ({ navigation}) => {
+const cart = ({ navigation }) => {
 
-    const [ data , setData ] = useState();
+    const [data, setData] = useState();
+    const [ showModal, setshowModal] = useState(false);
+
+    const incrementQuantity = (id ,quantity) => {
+        const newQuantity = quantity + 1
+        updateQuantity(id, newQuantity)
+        getData();
+    }
+    const decrementQuantity = (id ,quantity) => {
+        const newQuantity = quantity - 1;
+        updateQuantity(id, newQuantity)
+        getData();
+    }
 
     useEffect(() => {
         getData();
-    },[])
+    }, [])
 
     const getData = async () => {
         // console.log(itemId)
@@ -22,47 +34,78 @@ const cart = ({ navigation}) => {
         }
     }
 
+    const showModel = () => {
+
+        <Modal
+            animationType="fade"
+            transparent={true}
+            visible={modalVisible}
+            onRequestClose={() => {
+                setModalVisible(!modalVisible);
+            }}
+        />
+
+    }
+
+    const handleDelete = (id) => {
+        deleteItem(id);
+        getData();
+    }
+
     const show = ({ item }) => {
         // console.log(item,"from show")
         return (
-                <View style={styles.item} >
-                    <View style={styles.image}><Text>Image</Text></View>
-                    <View style={styles.aboutItem}>
-                        <Text style={[styles.title]}>{item?.item?.name}</Text>
-                        <Text style={[styles.itemDesc]}>{item?.item?.description}</Text>
-                        <Text style={[styles.itemPrice]}> Rs. { item.quantity * item?.item?.price } /-</Text>
-                        <View style={styles.btnview}>
-                            <Button title="-" style= {styles?.quantitybtn}/>
-                            <Text> {item.quantity}</Text>
-                            <Button title="+" style= {styles?.quantitybtn} />
-                        </View>
-                        {/* <View style={{flexDirection: 'row'}}>
-											<TouchableOpacity onPress={() => this.quantityHandler('less', i)} style={{ borderWidth: 1, borderColor: '#cccccc' }}>
-												<MaterialIcons name="remove" size={22} color="#cccccc" />
-											</TouchableOpacity>
-											<Text style={{ borderTopWidth: 1, borderBottomWidth: 1, borderColor: '#cccccc', paddingHorizontal: 7, paddingTop: 3, color: '#bbbbbb', fontSize: 13 }}>{item.qty}</Text>
-											<TouchableOpacity onPress={() => this.quantityHandler('more', i)} style={{ borderWidth: 1, borderColor: '#cccccc' }}>
-												<MaterialIcons name="add" size={22} color="#cccccc" />
-											</TouchableOpacity>
-										</View> */}
+            <View style={styles.item} >
+                <View style={styles.image}><Text>Image</Text></View>
+                <View style={styles.aboutItem}>
+                    <View style={styles.title}>
+                        <Text style={{ fontSize: 20 }}>{item?.item?.name}</Text>
+                        <Pressable onPress={() => {
+                            console.log("delete")
+                            handleDelete(item.id)
+                            }}>
+                            <Text style={{ fontSize: 20 }}>x</Text>
+                        </Pressable>
+                    </View>
+
+                    <Text style={[styles.itemDesc]}>{item?.item?.description}</Text>
+                    <Text style={[styles.itemPrice]}> Rs. {item.quantity * item?.item?.price} /-</Text>
+                    <View style={styles.btnview}>
+                        <Pressable onPress={() => {
+                            console.log("+");
+                            incrementQuantity(item.id, item.quantity)
+                    }} >
+                            <Text style={styles?.quantitybtn}> + </Text>
+                        </Pressable>
+                        <Text style={styles.quantityno}> {item.quantity}</Text>
+                        <Pressable onPress={() => {
+                            console.log(" --");
+                            decrementQuantity(item.id, item.quantity)
+                        }}>
+                            <Text style={styles?.quantitybtn}> - </Text>
+                        </Pressable>
                     </View>
                 </View>
+                <View>
+
+                </View>
+            </View>
         )
     }
 
     return (
         <View style={{ flex: 1, flexDirection: "column", backgroundColor: "coral" }}>
-        <FlatList
-            data={data}
-            renderItem={show}
-            keyExtractor={(data) => data.id }
-        />
-        <View>
-            <Button title="Shop more" onPress = {() => {
-                 navigation.navigate("Home")
-            }} />
-            {/* {console.log("data",data)} */}
-        </View>
+            <FlatList
+                data={data}
+                renderItem={show}
+                keyExtractor={(data) => data.id}
+            />
+            <View>
+                <Button title="Shop more" onPress={() => {
+                    navigation.navigate("Home")
+                }} />
+                {/* {console.log("data",data)} */}
+            </View>
         </View>
     )
 }
@@ -71,20 +114,23 @@ const cart = ({ navigation}) => {
 const styles = StyleSheet.create({
 
     item: {
-        flex: 1,
+        flex: 2,
         padding: 5,
         marginVertical: 8,
         marginHorizontal: 16,
         backgroundColor: "grey",
         justifyContent: "space-between",
         flexDirection: "row",
-        flexGrow: 4,
+        flexGrow: 10,
         borderRadius: 11,
         maxHeight: 130,
 
     },
     title: {
-        fontSize: 20,
+        flexDirection: "row",
+        justifyContent: "space-between",
+        marginRight: 8,
+        fontSize: 20
     },
     image: {
         flex: 1,
@@ -92,6 +138,7 @@ const styles = StyleSheet.create({
         marginRight: 10,
         alignItems: "center",
         justifyContent: 'center',
+        maxHeight: 200
     },
     aboutItem: {
         flex: 3,
@@ -107,25 +154,29 @@ const styles = StyleSheet.create({
         fontWeight: "100",
         fontStyle: "italic",
         opacity: 0.5,
-        // maxHeight: 8
     },
-    quantitybtn : {
-        flex : 1,
-        backgroundColor: "red",
-        width: 15,
-        height:15,
-        color:"red",
-        justifyContent: "center",
-        alignItems: "center"
+    btnview: {
+        flexDirection: "row",
+        alignItems: "center",
+        alignContent: "center",
+        justifyContent: "flex-end",
+        marginRight: 8,
 
     },
-    btnview : {
-        // flex:1,
-        flexDirection:"row",
-        alignContent:"flex-end",
-        width: 15,
-        height:15,
-        color: "red",
+    quantitybtn: {
+        fontSize: 18,
+        fontWeight: "bold",
+        marginHorizontal: 2,
+        justifyContent: "center",
+        alignContent: "center",
+        borderWidth: 1,
+        backgroundColor: "#1DCFE0",
+    },
+    quantityno: {
+        borderEndWidth: 2,
+        justifyContent: "center",
+        alignItems: "center",
+        fontWeight: "bold"
     }
 
 });

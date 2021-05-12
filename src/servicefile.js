@@ -78,10 +78,10 @@ export function cartItems() {
             return error.response;
         });
 }
-export function deleteItem() {
+export function deleteItem(id) {
     return axios({
         method: "DELETE",
-        url: baseURL + `/deleteitem/:${id}`
+        url: baseURL + `/deleteitem/${id}`
     })
         .then(data => {
             return data;
@@ -91,12 +91,16 @@ export function deleteItem() {
             return error.response;
         });
 }
-export function updateQuantity(id) {
+export function updateQuantity(id, quantity) {
     return axios({
         method: "PUT",
-        url: baseURL + `/updatequantity/:${id}`
+        url: baseURL + `/updatequantity/${id}`,
+        data: {
+            quantity: quantity
+        }
     })
         .then(data => {
+            // console.log(data)
             return data;
         })
         .catch(error => {
