@@ -52,7 +52,7 @@ const details = ({ navigation, route }) => {
                         title="Add To Cart"
                         onPress={() => {
                             console.log("Item Added");
-                            // addToCart(data.id)
+                            addToCart(data.id)
                             navigation.navigate('Cart')
                         }}
                         color="#843ED7"
