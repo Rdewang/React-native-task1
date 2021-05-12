@@ -13,9 +13,14 @@ const cart = ({ navigation }) => {
         getData();
     }
     const decrementQuantity = (id ,quantity) => {
+
+        if(quantity > 1){
         const newQuantity = quantity - 1;
         updateQuantity(id, newQuantity)
         getData();
+        return ;
+        }
+
     }
 
     useEffect(() => {
@@ -100,11 +105,13 @@ const cart = ({ navigation }) => {
                 renderItem={show}
                 keyExtractor={(data) => data.id}
             />
-            <View>
-                <Button title="Shop more" onPress={() => {
+            <View style ={{ justifyContent : "space-evenly", flexDirection : "row", paddingBottom : 15}}>
+                <Button title="Shop more" color="green" onPress={() => {
                     navigation.navigate("Home")
                 }} />
-                {/* {console.log("data",data)} */}
+                <Button title="Check out" color="purple" onPress={() => {
+                    console.log("check out")
+                }} />
             </View>
         </View>
     )
