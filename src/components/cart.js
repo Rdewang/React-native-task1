@@ -111,6 +111,7 @@ const cart = ({ navigation }) => {
                 }} />
                 <Button title="Check out" color="purple" onPress={() => {
                     console.log("check out")
+                    emptyCart();
                 }} />
             </View>
         </View>
