@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
         padding: 5,
         marginVertical: 8,
         marginHorizontal: 16,
-        backgroundColor: "grey",
+        backgroundColor: "floralwhite",
         justifyContent: "space-between",
         flexDirection: "row",
         flexGrow: 4,
